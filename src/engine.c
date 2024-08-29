@@ -143,7 +143,7 @@ Value divide(Value *a, Value *b) {
 }
 
 void print_val(Value *v) { printf("Data: %f, Grad: %f\n", v->data, v->grad); }
-
+/*
 int main() {
   Value a = create_value(2);
   Value b = create_value(1);
@@ -166,4 +166,4 @@ int main() {
   print_val(&c);
   print_val(&a);
   print_val(&x);
-}
+}*/
