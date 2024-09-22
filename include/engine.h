@@ -11,21 +11,21 @@ typedef struct Value {
     char op[5];
 } Value;
 
-Value create_value(float data);
+Value* create_value(float data);
 void free_value(Value* v);
 void add_backward(Value* v);
-Value add(Value* a, Value* b);
+Value* add(Value* a, Value* b);
 void prod_backward(Value* v);
-Value prod(Value* a, Value* b);
+Value* prod(Value* a, Value* b);
 void pow_backward(Value* v);
-Value power(Value* a, Value* power_val);
+Value* power(Value* a, Value* power_val);
 void exp_backward(Value* v);
-Value exponent(Value* a);
+Value* exponent(Value* a);
 void tanh_backward(Value* v);
-Value tan_h(Value* a);
+Value* tan_h(Value* a);
 void relu_backward(Value* v);
-Value relu(Value* a);
-Value divide(Value* a, Value* b);
+Value* relu(Value* a);
+Value* divide(Value* a, Value* b);
 void print_val(Value* v);
 
 #endif
