@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdio.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -99,28 +100,59 @@ void free_layer(Layer* layer) {
     }
 }
 
+
+float mse(Value** y_pred, float* output, int len) {
+    
+    float error = 0;
+
+    for (int i = 0; i < len; i++){
+        float square_diff = (y_pred[i]->data - output[i]); 
+        error+=square_diff;
+    }
+
+    error = error/len;
+
+    return  error;
+
+}
+
+
+
+
 int main() {
     srand(time(NULL));
+
+    float output[] = {1,2,3};
     int num_out = 4;
-    Layer* layer = create_layer(5, num_out);
+    int num_out_2 = 3;
+    Layer* layer_1 = create_layer(5, num_out);
 
     float x[5] = {0.45, 0.12, 0.34, 0.62, 0.22};
     Value** x_val = modify_input(x, 5);
-    Value** output = call_layer(layer, x_val);
+    Value** layer_output = call_layer(layer_1, x_val);
 
-    print_layer(layer);
+    Layer* layer_2 = create_layer(num_out, num_out_2);
+    Value** layer_out_2 = call_layer(layer_2, layer_output);
 
-    for (int i = 0; i < num_out; i++) {
-        print_val(output[i]);
-        output[i]->grad = 1.0;
-        print_val(output[i]);
-        output[i]->backward(output[i]);
-        print_neuron(layer->neurons[i]);
-    }
+    print_val(layer_out_2[0]);
+
+
+
+    float error = mse(layer_out_2, output, num_out_2);
     
+    for (int i = 0; i < num_out_2; i++) {
+        print_val(layer_out_2[i]);
+        layer_out_2[i]->grad = error;
+        print_val(layer_out_2[i]);
+        layer_out_2[i]->backward(layer_out_2[i]);
+        print_neuron(layer_1->neurons[i]);
+    }
 
-    free(output);
-    free_layer(layer);
+
+    free(layer_output);
+    free(layer_out_2);
+    free_layer(layer_1);
+    free_layer(layer_2);
     free(x_val); 
     return 0;
 }
